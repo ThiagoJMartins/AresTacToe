@@ -37,11 +37,11 @@ npm install
 4. Ingresá tu nombre de usuario, luego seleccioná si querés crear o unirte a una sala.
 5. Al crear o unirte se te pedirá un **código** y una **contraseña**. Ambos datos son necesarios tanto para el host como para la persona invitada.
 
-> 💡 Podés cambiar la URL del WebSocket estableciendo la variable de entorno `VITE_WS_URL` antes de arrancar el cliente. Por defecto se conecta a `ws://localhost:3001`.
+> 💡 Podés cambiar la URL del WebSocket estableciendo la variable de entorno `VITE_WS_URL` antes de arrancar el cliente. Por defecto la app usa un `wss://` apuntando al mismo dominio cuando se sirve sobre HTTPS, o `ws://localhost:3001` durante el desarrollo local.
 
 ## Juego contra el bot
 
-El modo "Jugar Solo" utiliza un bot determinista que analiza todas las combinaciones posibles para ofrecer partidas desafiantes. Tras cada encuentro podés reiniciar la partida y volver al inicio cuando quieras.
+El modo "Jugar Solo" ahora permite elegir la dificultad entre **Fácil**, **Intermedio** y **Difícil**. El bot combina jugadas aleatorias con estrategia minimax para adaptarse al nivel seleccionado. Tras cada encuentro podés reiniciar la partida y volver al inicio cuando quieras.
 
 ## Licencia
 

@@ -12,7 +12,18 @@ const STEPS = {
   PLAYING: "playing",
 };
 
-const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://localhost:3001";
+const resolveDefaultWsUrl = () => {
+  if (typeof window === "undefined") {
+    return "ws://localhost:3001";
+  }
+
+  const { protocol, hostname } = window.location;
+  const wsProtocol = protocol === "https:" ? "wss" : "ws";
+  const port = protocol === "https:" ? "" : ":3001";
+  return `${wsProtocol}://${hostname}${port}`;
+};
+
+const WS_URL = import.meta.env.VITE_WS_URL || resolveDefaultWsUrl();
 
 const createInitialState = () => ({
   board: createEmptyBoard(),
@@ -54,7 +65,7 @@ export function OnlineGame({ onGoHome }) {
 
   const cleanupConnection = useCallback(() => {
     const socket = socketRef.current;
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
       socket.close();
     }
     socketRef.current = null;
@@ -192,10 +203,19 @@ export function OnlineGame({ onGoHome }) {
     cleanupConnection();
     setErrorMessage("");
 
-    const socket = new WebSocket(WS_URL);
+    let socket;
+    try {
+      socket = new WebSocket(WS_URL);
+    } catch (error) {
+      console.error("No se pudo crear la conexión WebSocket", error);
+      setConnectionState("error");
+      setErrorMessage("URL de WebSocket inválida. Revisá la configuración del servidor.");
+      return;
+    }
+
     socketRef.current = socket;
     setConnectionState("connecting");
-    setStatusMessage("Conectando al servidor...");
+    setStatusMessage(`Conectando al servidor... (${WS_URL})`);
 
     socket.addEventListener("open", () => {
       setConnectionState("connected");
@@ -215,7 +235,7 @@ export function OnlineGame({ onGoHome }) {
     socket.addEventListener("message", handleServerMessage);
 
     socket.addEventListener("close", () => {
-      setConnectionState("disconnected");
+      setConnectionState((prev) => (prev === "error" ? prev : "disconnected"));
       socketRef.current = null;
       if (stepRef.current === STEPS.PLAYING || stepRef.current === STEPS.WAITING) {
         setErrorMessage("Conexión cerrada con el servidor.");
@@ -226,7 +246,11 @@ export function OnlineGame({ onGoHome }) {
 
     socket.addEventListener("error", (event) => {
       console.error("Error en la conexión WebSocket", event);
-      setErrorMessage("No se pudo establecer la conexión con el servidor.");
+      setConnectionState("error");
+      setErrorMessage(
+        "No se pudo establecer la conexión con el servidor. Verificá que el backend esté funcionando.",
+      );
+      socket.close();
     });
   }, [action, handleServerMessage, password, roomCode, username, cleanupConnection, resetLocalState, updateStep]);
 
