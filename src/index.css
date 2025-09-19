@@ -69,6 +69,21 @@ body {
   color: #222;
 }
 
+.board button.toggle-button {
+  min-width: 120px;
+}
+
+.board button.toggle-button.is-active {
+  background: #09f;
+  color: #fff;
+  border-color: #09f;
+}
+
+.board button.toggle-button.is-active:hover {
+  background: #09f;
+  color: #fff;
+}
+
 .board .game {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -359,4 +374,36 @@ body {
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bot-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin: 10px auto 20px;
+}
+
+.bot-setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.bot-settings .toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.bot-settings button {
+  margin: 0;
+}
+
+.bot-settings-note {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 4px;
 }

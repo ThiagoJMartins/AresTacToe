@@ -257,10 +257,10 @@ server.on("connection", (ws) => {
 
         if (winner) {
           room.winner = winner;
-          room.turn = getNextTurn(player.symbol);
+          room.turn = null;
         } else if (isDraw(room.board)) {
           room.winner = "draw";
-          room.turn = getNextTurn(player.symbol);
+          room.turn = null;
         } else {
           room.turn = getNextTurn(room.turn);
         }

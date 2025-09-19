@@ -8,7 +8,7 @@ Aplicación de Tic-Tac-Toe creada con React y Vite que ahora admite tres modos d
 
 ## Requisitos
 
-- Node.js 18 o superior
+- Node.js 20 o superior (LTS)
 
 ## Instalación
 
