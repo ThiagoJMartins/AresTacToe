@@ -9,19 +9,25 @@ export function Footer() {
       <a
         className="links"
         href="https://linkedin.com/in/thiago-javier-martins"
-        target="_blank">
+        target="_blank"
+        rel="noreferrer"
+      >
         <img src={linkedin} width={30} />
       </a>
       <a
         className="links"
         href="https://thiagomartins.vercel.app"
-        target="_blank">
+        target="_blank"
+        rel="noreferrer"
+      >
         <img src={portfolio} width={30} />
       </a>
       <a
         className="links"
         href="https://github.com/thiagojmartins"
-        target="_blank">
+        target="_blank"
+        rel="noreferrer"
+      >
         <img src={github} width={30} />
       </a>
     </footer>
